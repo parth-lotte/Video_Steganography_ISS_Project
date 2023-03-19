@@ -14,23 +14,7 @@ import cv2
 
 
 # def encode_txt_data():
-#     count2=0
-#     file1 = open("Sample_cover_files/cover_text.txt","r")
-#     for line in file1: 
-#         for word in line.split():
-#             count2=count2+1
-#     file1.close()       
-#     bt=int(count2)
-#     print("Maximum number of words that can be inserted :- ",int(bt/6))
-#     text1=input("\nEnter data to be encoded:- ")
-#     l=len(text1)
-#     if(l<=bt):
-#         print("\nInputed message can be hidden in the cover file\n")
-#         txt_encode(text1)
-#     else:
-#         print("\nString is too big please reduce string size")
-#         encode_txt_data()
-
+#
 
 # In[4]:
 
