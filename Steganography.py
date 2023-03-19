@@ -4,10 +4,22 @@ import os
 import cv2
 
 
+def msgtobinary(msg):
+    if type(msg) == str:
+        result= ''.join([ format(ord(i), "08b") for i in msg ])
+    
+    elif type(msg) == bytes or type(msg) == np.ndarray:
+        result= [ format(i, "08b") for i in msg ]
+    
+    elif type(msg) == int or type(msg) == np.uint8:
+        result=format(msg, "08b")
 
+    else:
+        raise TypeError("Input type is not supported in this function")
+    
+    return result
 
- 
-
+#  Here we apply the KSA Algo>>
 
 def KSA(key):
     key_length = len(key)
@@ -19,9 +31,7 @@ def KSA(key):
     return S
 
 
-# In[15]:
-
-
+# Here we define the PRGA Algo>>.
 def PRGA(S,n):
     i=0
     j=0
@@ -35,22 +45,14 @@ def PRGA(S,n):
         key.append(K)
     return key
 
-
-# In[16]:
-
-
 def preparing_key_array(s):
     return [ord(c) for c in s]
-
-
-# In[17]:
 
 
 def encryption(plaintext):
     print("Enter the key : ")
     key=input()
     key=preparing_key_array(key)
-
     S=KSA(key)
 
     keystream=np.array(PRGA(S,len(plaintext)))
@@ -62,17 +64,11 @@ def encryption(plaintext):
         ctext=ctext+chr(c)
     return ctext
 
-
-# In[18]:
-
-
 def decryption(ciphertext):
     print("Enter the key : ")
     key=input()
     key=preparing_key_array(key)
-
     S=KSA(key)
-
     keystream=np.array(PRGA(S,len(ciphertext)))
     ciphertext=np.array([ord(i) for i in ciphertext])
 
@@ -81,10 +77,6 @@ def decryption(ciphertext):
     for c in decoded:
         dtext=dtext+chr(c)
     return dtext
-
-
-# In[19]:
-
 
 def embed(frame):
     data=input("\nEnter the data to be Encoded in Video :") 
@@ -116,9 +108,6 @@ def embed(frame):
                 break
         return frame
 
-
-# In[20]:
-
 def extract(frame):
     data_binary = ""
     final_decoded_msg = ""
@@ -138,10 +127,6 @@ def extract(frame):
                     final_decoded_msg = decryption(final_decoded_msg)
                     print("\n\nThe Encoded data which was hidden in the Video was :--\n",final_decoded_msg)
                     return 
-
-
-# In[21]:
-
 
 def encode_vid_data():
     cap=cv2.VideoCapture("Sample_cover_files/cover_video.mp4")
@@ -178,8 +163,6 @@ def encode_vid_data():
     return frame_
 
 
-# In[22]:
-
 
 def decode_vid_data(frame_):
     cap = cv2.VideoCapture('stego_video.mp4')
@@ -202,11 +185,7 @@ def decode_vid_data(frame_):
         if frame_number == n:
             extract(frame_)
             return
-
-
-# In[23]:
-
-
+        
 def vid_steg():
     while True:
         print("\n\t\tVIDEO STEGANOGRAPHY OPERATIONS") 
