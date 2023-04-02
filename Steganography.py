@@ -1,8 +1,11 @@
+
+
+
 import numpy as np
 import pandas as pand
 import os
 import cv2
-
+from matplotlib import pyplot as plt
 
 def msgtobinary(msg):
     if type(msg) == str:
@@ -19,8 +22,6 @@ def msgtobinary(msg):
     
     return result
 
-#  Here we apply the KSA Algo>>
-
 def KSA(key):
     key_length = len(key)
     S=list(range(256)) 
@@ -31,7 +32,6 @@ def KSA(key):
     return S
 
 
-# Here we define the PRGA Algo>>.
 def PRGA(S,n):
     i=0
     j=0
@@ -45,14 +45,18 @@ def PRGA(S,n):
         key.append(K)
     return key
 
+
+
 def preparing_key_array(s):
     return [ord(c) for c in s]
+
 
 
 def encryption(plaintext):
     print("Enter the key : ")
     key=input()
     key=preparing_key_array(key)
+
     S=KSA(key)
 
     keystream=np.array(PRGA(S,len(plaintext)))
@@ -64,11 +68,14 @@ def encryption(plaintext):
         ctext=ctext+chr(c)
     return ctext
 
+
 def decryption(ciphertext):
     print("Enter the key : ")
     key=input()
     key=preparing_key_array(key)
+
     S=KSA(key)
+
     keystream=np.array(PRGA(S,len(ciphertext)))
     ciphertext=np.array([ord(i) for i in ciphertext])
 
@@ -77,6 +84,7 @@ def decryption(ciphertext):
     for c in decoded:
         dtext=dtext+chr(c)
     return dtext
+
 
 def embed(frame):
     data=input("\nEnter the data to be Encoded in Video :") 
@@ -108,6 +116,9 @@ def embed(frame):
                 break
         return frame
 
+
+
+
 def extract(frame):
     data_binary = ""
     final_decoded_msg = ""
@@ -127,6 +138,7 @@ def extract(frame):
                     final_decoded_msg = decryption(final_decoded_msg)
                     print("\n\nThe Encoded data which was hidden in the Video was :--\n",final_decoded_msg)
                     return 
+
 
 def encode_vid_data():
     cap=cv2.VideoCapture("Sample_cover_files/cover_video.mp4")
@@ -185,7 +197,7 @@ def decode_vid_data(frame_):
         if frame_number == n:
             extract(frame_)
             return
-        
+
 def vid_steg():
     while True:
         print("\n\t\tVIDEO STEGANOGRAPHY OPERATIONS") 
@@ -201,10 +213,11 @@ def vid_steg():
             break
         else:
             print("Incorrect Choice")
-        print("\n") 
+        print("\n")
+
 
 def main():
-    print("\t\t      STEGANOGRAPHY USING VIDEO")   
+    print("\t\t      VIDEO STEGANOGRAPHY")   
     while True:  
         print("\n\t\t\tMAIN MENU\n")  
         print("1. VIDEO STEGANOGRAPHY {Hiding Text in Video cover file}")
@@ -212,7 +225,6 @@ def main():
         choice1 = int(input("Enter the Choice: "))   
         if choice1 == 1: 
             vid_steg()
-        
         elif choice1 == 2:
             break
         else:
@@ -222,4 +234,9 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
 
